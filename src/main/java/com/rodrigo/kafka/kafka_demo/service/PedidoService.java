@@ -6,13 +6,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ProducerService {
+public class PedidoService {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    private static final String TOPIC = "pedido-topic";
+    public void enviarPedido(String pedidoId, String mensagem) {
 
-    public void enviar(String mensagem) {
-        kafkaTemplate.send(TOPIC, mensagem);
+        // KEY = pedidoId
+        kafkaTemplate.send("pedido-topic", pedidoId, mensagem);
+
+        System.out.println("Evento publicado com key: " + pedidoId);
     }
 }
